@@ -47,8 +47,8 @@ std::string Solver::DLS(int depthLimit){
 
 std::string Solver::IDDLS(){
     std::string s;
-    int maxDepth = 28;
-    for(int depth = 0; depth < maxDepth; ++depth){
+    int maxDepth = 30;
+    for(int depth = 0; depth < maxDepth; depth += 5){
         s = DLS(depth);
         if(s != "") {
             return s;
