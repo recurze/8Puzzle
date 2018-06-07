@@ -6,6 +6,7 @@
 class Solver{
 private:
     std::string DLS(int depthLimit);
+    std::string LimitedAstar(int depthLimit);
 public:
     const std::string goal = "123456780";
 

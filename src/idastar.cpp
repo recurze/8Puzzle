@@ -11,19 +11,18 @@
 typedef std::pair<int, Node> pin;
 typedef std::vector<pin> vpin;
 
-bool compare(pin a, pin b){
+bool c(pin a, pin b){
     return a.first > b.first;
 }
 
-std::string Solver::Astar(){
-    std::unordered_set<std::string> visited;
-    std::priority_queue< pin, vpin, std::function<bool(pin, pin)> > q(compare);
+std::string Solver::LimitedAstar(int depthLimit){
+    std::unordered_set<Node> visited;
+    std::priority_queue< pin, vpin, std::function<bool(pin, pin)> > q(c);
     std::string m, s, cs, cm;
     int cd;
     Node currNode;
 
     q.push({0 + h1(start), Node(start, "", 0)});
-    // q.push({0 + h(start), Node(start, "", 0)});
     while(!q.empty()){
         currNode = q.top().second;
         q.pop();
@@ -36,16 +35,32 @@ std::string Solver::Astar(){
             return cm;
         }
 
-        visited.insert(cs);
+        if(cd > depthLimit){
+            continue;
+        }
+
+        visited.insert(currNode);
 
         m = validMove(cs);
         for(int i = 0; m[i]; ++i){
             s = applyMove(cs, m[i]);
-            if(visited.find(s) == visited.end()){
-                q.push({cd + 1 + h1(s), Node(s, cm + m[i], cd + 1)});
-                // q.push({cd + 1 + h(s), Node(s, cm + m[i], cd + 1)});
-                visited.insert(s);
+            Node temp = Node(s, cm + m[i], cd + 1);
+            if(visited.find(temp) == visited.end()){
+                q.push({cd + 1 + h1(s), temp});
+                visited.insert(temp);
             }
+        }
+    }
+    return "";
+}
+
+std::string Solver::IDAstar(){
+    std::string s;
+    int maxDepth = 40;
+    for(int depth = 0; depth < maxDepth; depth += 11){
+        s = LimitedAstar(depth);
+        if(s != ""){
+            return s;
         }
     }
     return "";
