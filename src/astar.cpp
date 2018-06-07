@@ -18,6 +18,7 @@ bool compare(pin a, pin b){
 std::string Solver::Astar(){
     std::unordered_set<std::string> visited;
     std::priority_queue< pin, vpin, std::function<bool(pin, pin)> > q(compare);
+    //std::priority_queue< pin > q;
     std::string m, s, cs, cm;
     int cd;
     Node currNode;
