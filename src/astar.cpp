@@ -5,17 +5,36 @@
 #include <string>
 #include <unordered_set>
 #include <queue>
+#include <functional>
 
-std::string Solver::BFS(){
+typedef std::pair<int, Node> pin;
+typedef std::vector<pin> vpin;
+
+inline int h(std::string s){
+    int ret = 0;
+    for(int i = 0; s[i]; ++i){
+        if(s[i]-'1' != i){
+            ++ret;
+        }
+    }
+    return ret;
+}
+
+
+bool compare(pin a, pin b){
+    return a.first > b.first;
+}
+
+std::string Solver::Astar(){
     std::unordered_set<std::string> visited;
-    std::queue<Node> q;
+    std::priority_queue< pin, vpin, std::function<bool(pin, pin)> > q(compare);
     std::string m, s, cs, cm;
     int cd;
     Node currNode;
 
-    q.push(Node(start, "", 0));
+    q.push({0 + h(start), Node(start, "", 0)});
     while(!q.empty()){
-        currNode = q.front();
+        currNode = q.top().second;
         q.pop();
 
         cs = currNode.state;
@@ -32,7 +51,7 @@ std::string Solver::BFS(){
         for(int i = 0; m[i]; ++i){
             s = applyMove(cs, m[i]);
             if(visited.find(s) == visited.end()){
-                q.push(Node(s, cm + m[i], cd + 1));
+                q.push({cd + 1 + h(s), Node(s, cm + m[i], cd + 1)});
                 visited.insert(s);
             }
         }

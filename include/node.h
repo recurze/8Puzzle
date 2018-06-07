@@ -15,6 +15,7 @@ public:
         state = s;
         moves = m;
         depth = d;
+        n = moves.length();
     }
 
     inline bool operator==(const Node& b) const{

@@ -4,6 +4,6 @@
 int main(){
     Solver s;
     std::cin>>s.start;
-    std::cout<<s.DFS()<<'\n';
+    std::cout<<s.Astar()<<'\n';
     return 0;
 }
