@@ -3,10 +3,10 @@
 This project contains programs following different algorithms:
 * Breadth First Search
 * Depth First Search
-* Depth limited Search
 * Iterative Deepening Search
 * Dijkstra
 * A\* Search
+* Iterative Deepening A\* Search
 
 ## Motivation
 

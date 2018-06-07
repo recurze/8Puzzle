@@ -16,6 +16,21 @@ public:
         moves = m;
         depth = d;
     }
+
+    inline bool operator==(const Node& b) const{
+        return (state == b.state && depth == b.depth);
+    }
+
+    inline bool operator<(const Node& b) const{
+        return (state < b.state || depth < b.depth);
+    }
 };
 
+namespace std {
+    template<> struct hash<Node> {
+        size_t operator()(const Node & obj) const {
+            return hash<string>()(obj.state);
+        }
+    };
+}
 #endif

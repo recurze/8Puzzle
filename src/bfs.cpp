@@ -24,7 +24,6 @@ std::string Solver::BFS(){
         cd = currNode.depth;
 
         if(cs == goal){
-            std::cout<<cd;
             return cm;
         }
 
