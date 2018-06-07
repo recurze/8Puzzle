@@ -4,27 +4,43 @@
 
 #include <string>
 #include <stack>
+#include <unordered_set>
 
-std::string DLS_util(std::string cs, std::string cm, std::string goal,
-                     int depthLimit){
-    if (cs==goal){
-        return cm;
-    }
-    if(depthLimit < 0){
-        return "";
-    }
-    std::string f, m;
+std::string Solver::DLS(int depthLimit){
+    std::unordered_set<Node> visited;
+    std::stack<Node> q;
+    std::string m, s, cs, cm;
+    int cd;
+    Node currNode;
 
-    m = validMove(cs);
-    for(int i = 0; m[i]; ++i){
-        f = DLS_util(applyMove(cs, m[i]), cm + m[i], goal, depthLimit-1);
-        if(f != ""){
-            return f;
+    q.push(Node(start, "", 0));
+    while(!q.empty()){
+        currNode = q.top();
+        q.pop();
+
+        cs = currNode.state;
+        cm = currNode.moves;
+        cd = currNode.depth;
+
+        if(cs == goal){
+            return cm;
+        }
+
+        if(cd > depthLimit){
+            continue;
+        }
+
+        visited.insert(currNode);
+
+        m = validMove(cs);
+        for(int i = 0; m[i]; ++i){
+            s = applyMove(cs, m[i]);
+            Node temp = Node(s, cm + m[i], cd + 1);
+            if(visited.find(temp) == visited.end()){
+                q.push(temp);
+                visited.insert(temp);
+            }
         }
     }
     return "";
-}
-
-std::string Solver::DLS(int depthLimit){
-    return DLS_util(start, "", goal, depthLimit);
 }
